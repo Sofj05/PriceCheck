@@ -33,6 +33,10 @@ public class Order {
         this.status = "KLAR";
     }
 
+    public boolean isPending() {
+        return "MODTAGET".equals(this.status);
+    }
+
     @Override
     public String toString() {
         return String.format("ID: %d, Ret: %s, Antal: %d, Status: %s", id, food.getName(), quantity, status);

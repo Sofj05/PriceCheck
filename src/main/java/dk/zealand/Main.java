@@ -27,9 +27,10 @@ public class Main {
                 case "1" -> showDishes();
                 case "2" -> createOrder(scanner);
                 case "3" -> markOrderReady(scanner);
+                case "4" -> showPendingCount();
                 case "0" -> running = false;
                 default -> System.out.println(
-                        "Ugyldigt valg. Vælg 0, 1, 2 eller 3."
+                        "Ugyldigt valg. Vælg 0, 1, 2, 3 eller 4."
                 );
             }
         }
@@ -42,6 +43,7 @@ public class Main {
         System.out.println("1. Vis retter");
         System.out.println("2. Opret bestilling");
         System.out.println("3. Markér bestilling som klar");
+        System.out.println("4. Vis antal ventende bestillinger");
         System.out.println("0. Afslut");
         System.out.print("Vælg: ");
     }
@@ -105,5 +107,10 @@ public class Main {
         } catch (IllegalArgumentException | IllegalStateException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private static void showPendingCount() {
+        int pending = ORDER_SERVICE.countPending();
+        System.out.printf("Antal ventende bestillinger: %d%n", pending);
     }
 }

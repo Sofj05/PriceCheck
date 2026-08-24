@@ -9,6 +9,7 @@ import java.util.List;
 public class OrderService {
     private static final int MAX_ORDERS = 10;
     private static final String STATUS_RECEIVED = "MODTAGET";
+    private static final String STATUS_READY = "KLAR";
 
     private final List<Order> orders = new ArrayList<>();
     private final FoodService foodService;
@@ -45,6 +46,24 @@ public class OrderService {
 
         Order order = new Order(nextOrderId++, selectedFood, quantity, STATUS_RECEIVED);
         orders.add(order);
+        return order;
+    }
+
+    public Order markOrderReady(int id) {
+        Order order = orders.stream()
+                .filter(o -> o.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Ukendt id. Ingen bestilling med dette id."));
+
+        if (STATUS_READY.equals(order.getStatus())) {
+            throw new IllegalStateException("Bestillingen er allerede KLAR.");
+        }
+
+        if (!STATUS_RECEIVED.equals(order.getStatus())) {
+            throw new IllegalStateException("Kun bestillinger med status MODTAGET kan markeres som KLAR.");
+        }
+
+        order.markReady();
         return order;
     }
 

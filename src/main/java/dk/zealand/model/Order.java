@@ -4,7 +4,7 @@ public class Order {
     private final int id;
     private final Food food;
     private final int quantity;
-    private final String status;
+    private String status;
 
     public Order(int id, Food food, int quantity, String status) {
         this.id = id;
@@ -27,5 +27,14 @@ public class Order {
 
     public String getStatus() {
         return status;
+    }
+
+    public void markReady() {
+        this.status = "KLAR";
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d, Ret: %s, Antal: %d, Status: %s", id, food.getName(), quantity, status);
     }
 }

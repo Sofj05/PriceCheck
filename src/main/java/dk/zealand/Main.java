@@ -1,15 +1,14 @@
 package dk.zealand;
 
+import dk.zealand.model.Food;
+import dk.zealand.service.FoodService;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    private static final String[] DISHES = {
-            "Festivalburger",
-            "Sprøde fritter",
-            "Vegansk bowl"
-    };
+    private static final FoodService FOOD_SERVICE = new FoodService();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -47,8 +46,10 @@ public class Main {
     private static void showDishes() {
         System.out.println("Retter:");
 
-        for (int i = 0; i < DISHES.length; i++) {
-            System.out.printf("%d. %s%n", i + 1, DISHES[i]);
+        List<Food> foods = FOOD_SERVICE.getFoods();
+        for (int i = 0; i < foods.size(); i++) {
+            Food food = foods.get(i);
+            System.out.printf("%d. %s - %d kr.%n", i + 1, food.getName(), food.getPrice());
         }
     }
 }

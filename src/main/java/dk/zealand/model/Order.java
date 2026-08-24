@@ -33,8 +33,16 @@ public class Order {
         this.status = "KLAR";
     }
 
+    public void markCanceled() {
+        this.status = "ANNULLERET";
+    }
+
     public boolean isPending() {
         return "MODTAGET".equals(this.status);
+    }
+
+    public boolean isCanceled() {
+        return "ANNULLERET".equals(this.status);
     }
 
     @Override

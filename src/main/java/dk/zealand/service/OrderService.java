@@ -70,4 +70,8 @@ public class OrderService {
     public List<Order> getOrders() {
         return new ArrayList<>(orders);
     }
+
+    public int countPending() {
+        return (int) orders.stream().filter(Order::isPending).count();
+    }
 }

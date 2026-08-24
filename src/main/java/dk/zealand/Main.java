@@ -26,9 +26,10 @@ public class Main {
             switch (choice) {
                 case "1" -> showDishes();
                 case "2" -> createOrder(scanner);
+                case "3" -> markOrderReady(scanner);
                 case "0" -> running = false;
                 default -> System.out.println(
-                        "Ugyldigt valg. Vælg 0, 1 eller 2."
+                        "Ugyldigt valg. Vælg 0, 1, 2 eller 3."
                 );
             }
         }
@@ -40,6 +41,7 @@ public class Main {
         System.out.println();
         System.out.println("1. Vis retter");
         System.out.println("2. Opret bestilling");
+        System.out.println("3. Markér bestilling som klar");
         System.out.println("0. Afslut");
         System.out.print("Vælg: ");
     }
@@ -78,6 +80,28 @@ public class Main {
             System.out.printf("Ret: %s%n", order.getFood().getName());
             System.out.printf("Antal: %d%n", order.getQuantity());
             System.out.printf("Status: %s%n", order.getStatus());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void markOrderReady(Scanner scanner) {
+        System.out.println();
+        System.out.print("Id på bestilling der skal markeres som klar: ");
+        String idInput = scanner.nextLine().trim();
+
+        int id;
+        try {
+            id = Integer.parseInt(idInput);
+        } catch (NumberFormatException e) {
+            System.out.println("Ugyldigt id. Indtast et tal.");
+            return;
+        }
+
+        try {
+            Order order = ORDER_SERVICE.markOrderReady(id);
+            System.out.println("Bestilling opdateret:");
+            System.out.println(order.toString());
         } catch (IllegalArgumentException | IllegalStateException e) {
             System.out.println(e.getMessage());
         }

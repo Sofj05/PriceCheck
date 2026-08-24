@@ -28,9 +28,10 @@ public class Main {
                 case "2" -> createOrder(scanner);
                 case "3" -> markOrderReady(scanner);
                 case "4" -> showPendingCount();
+                case "5" -> cancelOrder(scanner);
                 case "0" -> running = false;
                 default -> System.out.println(
-                        "Ugyldigt valg. Vælg 0, 1, 2, 3 eller 4."
+                        "Ugyldigt valg. Vælg 0, 1, 2, 3, 4 eller 5."
                 );
             }
         }
@@ -44,6 +45,7 @@ public class Main {
         System.out.println("2. Opret bestilling");
         System.out.println("3. Markér bestilling som klar");
         System.out.println("4. Vis antal ventende bestillinger");
+        System.out.println("5. Annullér bestilling");
         System.out.println("0. Afslut");
         System.out.print("Vælg: ");
     }
@@ -103,6 +105,28 @@ public class Main {
         try {
             Order order = ORDER_SERVICE.markOrderReady(id);
             System.out.println("Bestilling opdateret:");
+            System.out.println(order.toString());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void cancelOrder(Scanner scanner) {
+        System.out.println();
+        System.out.print("Id på bestilling der skal annulleres: ");
+        String idInput = scanner.nextLine().trim();
+
+        int id;
+        try {
+            id = Integer.parseInt(idInput);
+        } catch (NumberFormatException e) {
+            System.out.println("Ugyldigt id. Indtast et tal.");
+            return;
+        }
+
+        try {
+            Order order = ORDER_SERVICE.cancelOrder(id);
+            System.out.println("Bestilling annulleret:");
             System.out.println(order.toString());
         } catch (IllegalArgumentException | IllegalStateException e) {
             System.out.println(e.getMessage());

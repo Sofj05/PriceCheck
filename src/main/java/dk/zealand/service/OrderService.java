@@ -10,6 +10,7 @@ public class OrderService {
     private static final int MAX_ORDERS = 10;
     private static final String STATUS_RECEIVED = "MODTAGET";
     private static final String STATUS_READY = "KLAR";
+    private static final String STATUS_CANCELLED = "ANNULLERET";
 
     private final List<Order> orders = new ArrayList<>();
     private final FoodService foodService;
@@ -64,6 +65,27 @@ public class OrderService {
         }
 
         order.markReady();
+        return order;
+    }
+
+    public Order cancelOrder(int id) {
+        Order order = orders.stream()
+                .filter(o -> o.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Ukendt id. Ingen bestilling med dette id."));
+
+        if (STATUS_READY.equals(order.getStatus())) {
+            throw new IllegalStateException("En KLAR bestilling kan ikke annulleres.");
+        }
+
+        if (!STATUS_RECEIVED.equals(order.getStatus())) {
+            if (STATUS_CANCELLED.equals(order.getStatus())) {
+                throw new IllegalStateException("Bestillingen er allerede ANNULLERET.");
+            }
+            throw new IllegalStateException("Kun bestillinger med status MODTAGET kan annulleres.");
+        }
+
+        order.markCanceled();
         return order;
     }
 
